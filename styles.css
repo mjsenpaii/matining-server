@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #87ceeb, #f5f5f5);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flower-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.flower {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    animation: moveFlower 10s infinite linear;
+}
+
+@keyframes moveFlower {
+    0% {
+        transform: translate(-10%, -10%);
+    }
+    25% {
+        transform: translate(25vw, 25vh);
+    }
+    50% {
+        transform: translate(50vw, 50vh);
+    }
+    75% {
+        transform: translate(75vw, 25vh);
+    }
+    100% {
+        transform: translate(-10%, -10%);
+    }
+}
