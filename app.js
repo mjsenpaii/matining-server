@@ -1,0 +1,73 @@
+// const express = require('express');
+// const app = express();
+
+// app.get('/', (req, res) => {
+//     res.send('Hello World');
+// });
+// app.get('/api/test', (req, res) => {
+//     res.send([{ id: 1, text: 'Test Object'}]);
+// });
+// app.get('/api/posts/:year/:month', (req, res) => {
+//     res.send(req.query);
+// });
+
+// const PORT = 3000;
+// app.listen(PORT, () =>
+//     console.log(`Listening on http://localhost:${PORT}...`)
+// );
+
+// -------new line here-------
+
+
+const express = require('express');
+const app = express();
+
+
+const dsUsers = [
+    {
+        id: 1,
+        name: 'Mark'
+    },
+    {
+        id: 2,
+        name: 'John'
+    },
+    {
+        id: 3,
+        name: 'Marky'
+    },
+];
+
+
+// const port = process.env.PORT || 3000;
+// app.listen(port, () =>
+//     console.log(`Listening on http://localhost:${PORT}...`)
+// );
+
+const PORT = 3000;
+app.listen(PORT, () =>
+    console.log(`Listening on http://localhost:${PORT}...`)
+);
+app.use(express.static(path.join(__dirname,)));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+
+app.get('/api/users', (req, res) => {
+    res.send(dsUsers);
+});
+
+
+app.get('/api/users', (req, res) => {
+    //sort by name from parameters
+    res.send(dsUsers);
+});
+
+app.get('/api/users/:id', (req, res) => {
+    const user = dsUsers.find((c) => c.id = parseInt(req.params.id));
+    if (!user)
+        return resolveSoa.status(404),send('The user with the given ID was not found!');
+    res.send(user);
+});
