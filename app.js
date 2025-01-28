@@ -45,10 +45,7 @@ const dsUsers = [
 //     console.log(`Listening on http://localhost:${PORT}...`)
 // );
 
-const PORT = 3000;
-app.listen(PORT, () =>
-    console.log(`Listening on http://localhost:${PORT}...`)
-);
+
 app.use(express.static(path.join(__dirname,)));
 
 app.get('/', (req, res) => {
@@ -79,3 +76,20 @@ app.get('/api/users/:id', (req, res) => {
         return resolveSoa.status(404),send('The user with the given ID was not found!');
     res.send(user);
 });
+
+
+app.post('/api/users', (req, res) => {
+    const user = {
+        id: dsUsers.length + 1,
+        name: "Mark John",
+    };
+    dsUsers.push(user);
+    res.send(user);
+})
+
+app.use(express.json());
+
+const PORT = 3000;
+app.listen(PORT, () =>
+    console.log(`Listening on http://localhost:${PORT}...`)
+);
