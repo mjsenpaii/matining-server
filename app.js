@@ -23,6 +23,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+app.use(express.json());
 
 const dsUsers = [
     {
@@ -79,15 +80,29 @@ app.get('/api/users/:id', (req, res) => {
 
 
 app.post('/api/users', (req, res) => {
-    const user = {
-        id: dsUsers.length + 1,
-        name: "Mark John",
-    };
-    dsUsers.push(user);
-    res.send(user);
-})
+    if (!req.body.name || req.body.name.length < 3) {
+        //400 Bad Request
+        res
+            .status(400)
+            .send('Name is required and should be minimum 3 characters.');
+        return;
+    } else {
+        const user = {
+            id: dsUsers.length + 1,
+            name: req.body.name,
+        };
+        dsUsers.push(user);
+        res.send(user);
+    }
+    
+});
 
-app.use(express.json());
+
+
+
+
+
+
 
 const PORT = 3000;
 app.listen(PORT, () =>
