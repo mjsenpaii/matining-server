@@ -98,7 +98,15 @@ app.post('/api/users', (req, res) => {
 });
 
 
+// const schema = Joi.object({
+//     name: Joi.string().min(3).required(),
+// });
 
+// const result = schema.validate(req.body);
+// if (result.error) {
+//     res.status(400).send(result.error.details[0].message);
+//     return;
+// };
 
 
 
