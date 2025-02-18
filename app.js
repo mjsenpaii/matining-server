@@ -109,7 +109,15 @@ app.post('/api/users', (req, res) => {
 // };
 
 
-
+const mongoose = require('mongoose');
+mongoose
+    .connect('mongodb://127.0.0.1/test')
+    .then(() => 
+        console.log({
+            message: 'Connected to MongoDB...',
+        })
+    )
+    .catch((err) => console.error('Could not connect to MongoDB...', err));
 
 
 const PORT = 3000;
