@@ -133,8 +133,20 @@ async function createUser() {
     const result = await user.save();
     console.log(result);
 }
-
 createUser();
+
+
+
+async function getUsers() {
+    const users = await userModel.find({ lastname: 'Matining', gender: 'Male' })
+        .limit(10)
+        .sort({ firstname: 1 })
+        .select({ firstname: 1, lastname: 1 });
+    console.log(users);
+}
+getUsers();
+
+
 
 
 const PORT = 3000;
