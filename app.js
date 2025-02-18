@@ -125,10 +125,10 @@ const userModel = require('./userSchema');
 
 async function createUser() {
     const user = new userModel({
-        lastname: 'Doe',
-        firstname: 'John',
+        lastname: 'Matining',
+        firstname: 'Mark John',
         gender: 'Male',
-        birthday: new Date('1990-12-12'),
+        birthday: new Date('2002-12-13'),
     });
     const result = await user.save();
     console.log(result);
