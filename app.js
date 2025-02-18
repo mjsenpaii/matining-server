@@ -18,50 +18,40 @@
 
 // -------new line here-------
 
-
+// Import required modules
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
+const userModel = require('./userSchema');
+
 const app = express();
+app.use(express.json()); // Middleware to parse JSON bodies
 
-app.use(express.json());
-
+// Sample in-memory user data
 const dsUsers = [
-    {
-        id: 1,
-        name: 'Mark'
-    },
-    {
-        id: 2,
-        name: 'John'
-    },
-    {
-        id: 3,
-        name: 'Marky'
-    },
+    { id: 1, name: 'Mark' },
+    { id: 2, name: 'John' },
+    { id: 3, name: 'Marky' },
 ];
 
+// Connect to MongoDB
+mongoose
+    .connect('mongodb://127.0.0.1/test')
+    .then(() => console.log('Connected to MongoDB...'))
+    .catch((err) => console.error('Could not connect to MongoDB...', err));
 
-// const port = process.env.PORT || 3000;
-// app.listen(port, () =>
-//     console.log(`Listening on http://localhost:${PORT}...`)
-// );
+// Serve static files from the root directory
+app.use(express.static(path.join(__dirname)));
 
-
-app.use(express.static(path.join(__dirname,)));
-
+// Route to serve the index.html file
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-
+// Route to get all users
 app.get('/api/users', (req, res) => {
-    res.send(dsUsers);
-});
-
-
-app.get('/api/users', (req, res) => {
-    //sort by name from parameters
-    if (req.query.sortBy = 'name') {
+    // Sort by name if query parameter is provided
+    if (req.query.sortBy === 'name') {
         dsUsers.sort((a, b) => {
             if (a.name < b.name) return -1;
             if (a.name > b.name) return 1;
@@ -71,58 +61,28 @@ app.get('/api/users', (req, res) => {
     res.send(dsUsers);
 });
 
+// Route to get a user by ID
 app.get('/api/users/:id', (req, res) => {
-    const user = dsUsers.find((c) => c.id = parseInt(req.params.id));
-    if (!user)
-        return resolveSoa.status(404),send('The user with the given ID was not found!');
+    const user = dsUsers.find((c) => c.id === parseInt(req.params.id));
+    if (!user) return res.status(404).send('The user with the given ID was not found!');
     res.send(user);
 });
 
-
+// Route to create a new user
 app.post('/api/users', (req, res) => {
     if (!req.body.name || req.body.name.length < 3) {
-        //400 Bad Request
-        res
-            .status(400)
-            .send('Name is required and should be minimum 3 characters.');
-        return;
-    } else {
-        const user = {
-            id: dsUsers.length + 1,
-            name: req.body.name,
-        };
-        dsUsers.push(user);
-        res.send(user);
+        // 400 Bad Request if name is missing or too short
+        return res.status(400).send('Name is required and should be minimum 3 characters.');
     }
-    
+    const user = {
+        id: dsUsers.length + 1,
+        name: req.body.name,
+    };
+    dsUsers.push(user);
+    res.send(user);
 });
 
-
-// const schema = Joi.object({
-//     name: Joi.string().min(3).required(),
-// });
-
-// const result = schema.validate(req.body);
-// if (result.error) {
-//     res.status(400).send(result.error.details[0].message);
-//     return;
-// };
-
-
-const mongoose = require('mongoose');
-mongoose
-    .connect('mongodb://127.0.0.1/test')
-    .then(() => 
-        console.log({
-            message: 'Connected to MongoDB...',
-        })
-    )
-    .catch((err) => console.error('Could not connect to MongoDB...', err));
-
-
-
-const userModel = require('./userSchema');
-
+// Function to create a new user in MongoDB
 async function createUser() {
     const user = new userModel({
         lastname: 'Matining',
@@ -133,10 +93,9 @@ async function createUser() {
     const result = await user.save();
     console.log(result);
 }
-createUser();
+createUser(); // Call the function to create a user
 
-
-
+// Function to get users from MongoDB
 async function getUsers() {
     const users = await userModel.find({ lastname: 'Matining', gender: 'Male' })
         .limit(10)
@@ -144,12 +103,8 @@ async function getUsers() {
         .select({ firstname: 1, lastname: 1 });
     console.log(users);
 }
-getUsers();
+getUsers(); // Call the function to get users
 
-
-
-
+// Start the server
 const PORT = 3000;
-app.listen(PORT, () =>
-    console.log(`Listening on http://localhost:${PORT}...`)
-);
+app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}...`));
