@@ -120,6 +120,23 @@ mongoose
     .catch((err) => console.error('Could not connect to MongoDB...', err));
 
 
+
+const userModel = require('./userSchema');
+
+async function createUser() {
+    const user = new userModel({
+        lastname: 'Doe',
+        firstname: 'John',
+        gender: 'Male',
+        birthday: new Date('1990-12-12'),
+    });
+    const result = await user.save();
+    console.log(result);
+}
+
+createUser();
+
+
 const PORT = 3000;
 app.listen(PORT, () =>
     console.log(`Listening on http://localhost:${PORT}...`)
