@@ -100,6 +100,19 @@ app.post('/api/users', (req, res) => {
 
 
 // Function to get users from MongoDB
+/**
+ * Asynchronously retrieves and filters users from the database.
+ *
+ * This function fetches a list of users from the user model by applying case-insensitive regex filters on the
+ * lastname and gender properties. It then limits the result set to 10 documents, sorts them based on the
+ * firstname property in ascending order, and selects only the firstname and lastname fields for each document.
+ * After fetching the initial list, an additional filter is applied to ensure that each user's lastname starts with
+ * the letter "M", and the filtered users are logged to the console.
+ *
+ * @async
+ * @function getUsers
+ * @returns {Promise<void>} A promise that resolves when the process of retrieving and filtering users is complete.
+ */
 async function getUsers() {
     // const users = await userModel.find({
     //     $and: [
@@ -128,7 +141,7 @@ async function getUsers() {
 
     const regex = /^M/i;
     const filteredUsers = users.filter((user) => regex.test(user.lastname));
-    console.log("Got Filtered Users: " + filteredUsers);
+    console.log("Filtered Users: " + filteredUsers);
 }
 getUsers(); // Call the function to get users
 
