@@ -95,26 +95,44 @@ app.post('/api/users', (req, res) => {
 // }
 // createUser(); // Call the function to create a user
 
+
+
+
+
 // Function to get users from MongoDB
 async function getUsers() {
+    // const users = await userModel.find({
+    //     $and: [
+    //         { lastname: 'Matining' },
+    //         { gender: 'Male' },
+    //         {
+    //             $and: [
+    //                 { birthday: { $gte: new Date('2001-12-13') } },
+    //                 { birthday: { $lte: new Date('2024-12-31') } }
+    //             ]
+    //         }
+    //     ]
+    // })
+    //     .limit(10)
+    //     .sort({ firstname: 1 })
+    //     .select({ firstname: 1, lastname: 1 });
+    // console.log("Got Users " + users);
+
     const users = await userModel.find({
-        $and: [
-            { lastname: 'Matining' },
-            { gender: 'Male' },
-            {
-                $and: [
-                    { birthday: { $gte: new Date('2001-12-13') } },
-                    { birthday: { $lte: new Date('2024-12-31') } }
-                ]
-            }
-        ]
+        lastname: /Matining/i,
+        gender: /Male/i,
     })
         .limit(10)
         .sort({ firstname: 1 })
         .select({ firstname: 1, lastname: 1 });
-    console.log("Got Users " + users);
+
+    const regex = /^M/i;
+    const filteredUsers = users.filter((user) => regex.test(user.lastname));
+    console.log("Got Filtered Users: " + filteredUsers);
 }
 getUsers(); // Call the function to get users
+
+
 
 
 
