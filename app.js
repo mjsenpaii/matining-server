@@ -82,29 +82,54 @@ app.post('/api/users', (req, res) => {
     res.send(user);
 });
 
-// Function to create a new user in MongoDB
-async function createUser() {
-    const user = new userModel({
-        lastname: 'Matining',
-        firstname: 'Mark John',
-        gender: 'Male',
-        birthday: new Date('2002-12-13'),
-    });
-    const result = await user.save();
-    console.log(result);
-}
-createUser(); // Call the function to create a user
+// // Function to create a new user in MongoDB
+// async function createUser() {
+//     const user = new userModel({
+//         lastname: 'Matining',
+//         firstname: 'Mark John',
+//         gender: 'Male',
+//         birthday: new Date('2002-12-13'),
+//     });
+//     const result = await user.save();
+//     console.log(result);
+// }
+// createUser(); // Call the function to create a user
 
 // Function to get users from MongoDB
 async function getUsers() {
-    const users = await userModel.find({ lastname: 'Matining', gender: 'Male' })
+    const users = await userModel.find({
+        $and: [
+            { lastname: 'Matining' },
+            { gender: 'Male' },
+            {
+                $and: [
+                    { birthday: { $gte: new Date('2001-12-13') } },
+                    { birthday: { $lte: new Date('2024-12-31') } }
+                ]
+            }
+        ]
+    })
         .limit(10)
         .sort({ firstname: 1 })
         .select({ firstname: 1, lastname: 1 });
-    console.log(users);
+    console.log("Got Users " + users);
 }
 getUsers(); // Call the function to get users
 
-// Start the server
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}...`));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Start the server
+// const PORT = 3000;
+// app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}...`));

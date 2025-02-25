@@ -3,19 +3,19 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     lastname: {
         type: String,
-        required: true,
+        required: true
     },
     firstname: {
         type: String,
-        required: true,
+        required: true
     },
     gender: {
         type: String,
-        required: true,
+        required: true
     },
     birthday: {
-        type: String,
-        required: false,
+        type: Date,
+        required: false
     },
 }, { collection: 'tbl_users' });
 
