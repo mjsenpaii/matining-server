@@ -177,14 +177,23 @@ const update = {
 // Execute the updateUser function with the defined query and update objects
 updateUser(query, update);
 
-async function deleteData(query) {
-    try {
-        const result = await userModel.deleteOne(query);
-        console.log(`Deleted data: ${result}`);
-    } catch (err) {
-        console.error(`Error deleting data: ${err}`);
-    }
+// async function deleteData(query) {
+//     try {
+//         const result = await userModel.deleteOne(query);
+//         console.log(`Deleted data: ${result}`);
+//     } catch (err) {
+//         console.error(`Error deleting data: ${err}`);
+//     }
+// }
+
+// deleteData({ lastname: /Matining/i, firstname: /Marky/i });
+
+async function deleteAllData() {
+    const result = await userModel.deleteMany();
+    console.log(`All data deleted! ${result}`);
 }
+
+deleteAllData();
 
 
 
