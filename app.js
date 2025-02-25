@@ -36,7 +36,7 @@ const dsUsers = [
 
 // Connect to MongoDB
 mongoose
-    .connect('mongodb://127.0.0.1/test')
+    .connect('mongodb://localhost:27017/db_users')
     .then(() => console.log('Connected to MongoDB...'))
     .catch((err) => console.error('Could not connect to MongoDB...', err));
 
