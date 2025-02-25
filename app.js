@@ -145,9 +145,37 @@ async function getUsers() {
 }
 getUsers(); // Call the function to get users
 
+// Asynchronous function to update a user document in MongoDB based on a query
+async function updateUser(query, update) {
+    // Find the first user document that matches the query criteria
+    const user = await userModel.findOne(query);
+    if (user) { 
+        // Update the user's firstname and gender using the values from the update object
+        user.firstname = update.$set.firstname;
+        user.gender = update.$set.gender;
+        // Save the updated document back to the database
+        const result = await user.save();
+        // Log the result of the update operation to the console
+        console.log(result);
+    }
+}
 
+// Define a query object with regex filters for lastname and firstname
+const query = {
+    lastname: /Matining/i,  // Case-insensitive match for lastname "Matining"
+    firstname: /Mark John/i  // Case-insensitive match for firstname "Mark John"
+};
 
+// Define an update object that sets new values for firstname and gender fields
+const update = { 
+    $set: { 
+        firstname: 'Marky',  // New firstname value
+        gender: 'Female'     // New gender value
+    } 
+};
 
+// Execute the updateUser function with the defined query and update objects
+updateUser(query, update);
 
 
 
