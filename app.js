@@ -196,9 +196,17 @@ async function deleteAllData() {
 deleteAllData();
 
 
+const deleteData = async (id) => {
+    try {
+        const result = await userModel.findByIdAndDelete({ _id: id });
+        console.log(`Deleted data: ${result}`);
+    } catch (err) {
+        console.error(`Error deleting data: ${err}`);
+    }
+};
 
-
-
+const idToDelete = 'Id to delete';
+deleteData(idToDelete);
 
 
 
