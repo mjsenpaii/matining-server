@@ -156,7 +156,7 @@ async function updateUser(query, update) {
         // Save the updated document back to the database
         const result = await user.save();
         // Log the result of the update operation to the console
-        console.log(result);
+        console.log("Updated data: " + result);
     }
 }
 
@@ -177,8 +177,14 @@ const update = {
 // Execute the updateUser function with the defined query and update objects
 updateUser(query, update);
 
-
-
+async function deleteData(query) {
+    try {
+        const result = await userModel.deleteOne(query);
+        console.log(`Deleted data: ${result}`);
+    } catch (err) {
+        console.error(`Error deleting data: ${err}`);
+    }
+}
 
 
 
